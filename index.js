@@ -316,7 +316,6 @@ function getRandomCardFromDeck() {
 }
 
 function startGame() {
-    //console.log("--------------------")
     isAlive = true
     hasBlackJack = false
     dealer_round = 0
@@ -328,8 +327,8 @@ function startGame() {
     dealer_card5 = undefined
     dealer_card6 = undefined
     firstCard = getRandomCardFromDeck()
-    secondCard = getRandomCardFromDeck()
     dealer_card1 = getRandomCardFromDeck()
+    secondCard = getRandomCardFromDeck()
     dealer_card2 = getRandomCardFromDeck()
     cards = [firstCard, secondCard]
     dealer_cards = [dealer_card1, dealer_card2]
@@ -434,7 +433,6 @@ function dealerPlay() {
    
 
 }
-
 
 
 function shuffle() {
