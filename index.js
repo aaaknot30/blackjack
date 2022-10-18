@@ -272,7 +272,7 @@ let cards = []
 let sum = 0
 
 let dealer_cards = []
-let dealer_sum = 0
+let dealer_sum
 
 let hasBlackJack = false
 let isAlive = false
@@ -310,15 +310,13 @@ function getRandomCard() {
 
 function getRandomCardFromDeck() {
     let rnd = Math.floor( Math.random() * cardDeck.length )
-    console.log(cardDeck.length)
-    //console.log(cardDeck[rnd])
     //console.log(rnd)
     let card = cardDeck[rnd]
-    //cardDeck.splice(rnd, 1)
      return card
 }
 
 function startGame() {
+    //console.log("--------------------")
     isAlive = true
     hasBlackJack = false
     dealer_round = 0
@@ -331,10 +329,12 @@ function startGame() {
     dealer_card6 = undefined
     firstCard = getRandomCardFromDeck()
     secondCard = getRandomCardFromDeck()
+    dealer_card1 = getRandomCardFromDeck()
+    dealer_card2 = getRandomCardFromDeck()
     cards = [firstCard, secondCard]
+    dealer_cards = [dealer_card1, dealer_card2]
     sum = firstCard.value + secondCard.value
-    dealer_cards = []
-    dealer_sum = 0
+    dealer_sum = dealer_card1.value + dealer_card2.value
     dealerSumEl.textContent = ""
     dealerCardsEl.textContent = ""
     renderGame()
@@ -383,74 +383,27 @@ function newCard() {
 function dealerPlay() {
     if (isAlive === true) {
         messageEl.textContent = "Click DEALER PLAY" 
-        if (dealer_card1 === undefined) {
-            dealer_card1 = getRandomCardFromDeck()
-        }
-        if (dealer_card2 === undefined) {
-            dealer_card2 = getRandomCardFromDeck()
-        }
-        if (dealer_card3 === undefined) {
-            dealer_card3 = getRandomCardFromDeck()
-        }
-        if (dealer_card4 === undefined) {
-            dealer_card4 = getRandomCardFromDeck()
-        }
-        if (dealer_card5 === undefined) {
-            dealer_card5 = getRandomCardFromDeck()
-        }
-        if (dealer_card6 === undefined) {
-            dealer_card6 = getRandomCardFromDeck()
-        }
-       
-        let dealer_sum = dealer_card1.value + dealer_card2.value
         if (dealer_round === 0) {
-            console.log("hold 0")
-            dealer_sum = dealer_card1.value + dealer_card2.value
-            dealer_cards = []
-            dealer_cards.push(dealer_card1)
-            dealer_cards.push(dealer_card2)
             dealer_round = 1
         } else if (dealer_sum <=19 && dealer_round === 1) {
-            console.log("hold 1")
-            dealer_sum = dealer_card1.value + dealer_card2.value
-             + dealer_card3.value
-            dealer_cards = []
-            dealer_cards.push(dealer_card1)
-            dealer_cards.push(dealer_card2)
+            dealer_card3 = getRandomCardFromDeck()
             dealer_cards.push(dealer_card3)
+            dealer_sum += dealer_card3.value
             dealer_round = 2
         } else if (dealer_sum <=19 && dealer_round === 2) {
-            console.log("hold 2")
-            dealer_sum = dealer_card1.value + dealer_card2.value
-             + dealer_card3.value + dealer_card4.value
-            dealer_cards = []
-            dealer_cards.push(dealer_card1)
-            dealer_cards.push(dealer_card2)
-            dealer_cards.push(dealer_card3)
+            dealer_card4 = getRandomCardFromDeck()
             dealer_cards.push(dealer_card4)
+            dealer_sum += dealer_card4.value            
             dealer_round = 3
         } else if (dealer_sum <=19 && dealer_round === 3) {
-            console.log("hold 3")
-            dealer_sum = dealer_card1.value + dealer_card2.value
-             + dealer_card3.value + dealer_card4.value + dealer_card5.value
-            dealer_cards = []
-            dealer_cards.push(dealer_card1)
-            dealer_cards.push(dealer_card2)
-            dealer_cards.push(dealer_card3)
-            dealer_cards.push(dealer_card4)
+            dealer_card5 = getRandomCardFromDeck()
             dealer_cards.push(dealer_card5)
+            dealer_sum += dealer_card5.value
             dealer_round = 4
         } else if (dealer_sum <=19 && dealer_round === 4) {
-            console.log("hold 3")
-            dealer_sum = dealer_card1.value + dealer_card2.value + dealer_card3.value
-             + dealer_card4.value + dealer_card5.value + dealer_card6.value
-            dealer_cards = []
-            dealer_cards.push(dealer_card1)
-            dealer_cards.push(dealer_card2)
-            dealer_cards.push(dealer_card3)
-            dealer_cards.push(dealer_card4)
-            dealer_cards.push(dealer_card5)
+            dealer_card6 = getRandomCardFromDeck()
             dealer_cards.push(dealer_card6)
+            dealer_sum += dealer_card6.value            
             dealer_round = 5
         }
 
