@@ -337,6 +337,7 @@ function startGame() {
     dealer_sum = dealer_card1.value + dealer_card2.value
     dealerSumEl.textContent = ""
     dealerCardsEl.textContent = ""
+    document.getElementById("shuffle-el").textContent = "SHUFFLE"
     renderGame()
 }
 
@@ -428,24 +429,18 @@ function dealerPlay() {
             playerEl.textContent = player.name + ": $" + (player.chips)
             isAlive = false
         }  
-
-        /*console.log("dealer card1 " + dealer_card1)
-        console.log("dealer card2 " + dealer_card2)
-        console.log("dealer card3 " + dealer_card3)
-        console.log("dealer card4 " + dealer_card4)
-        console.log("dealer card5 " + dealer_card5)
-        console.log("dealer card6 " + dealer_card6)
-        console.log("dealer_sum " + dealer_sum)
-        console.log("dealer_round " + dealer_round)
-        console.log("dealerCardsEl " + dealerCardsEl.innerHTML)
-        console.log("dealer_cards " + dealer_cards)
-        console.log("messageEl " + messageEl.textContent)
-        console.log("isAlive " + isAlive)
-        console.log("player.chips " + player.chips)
-        console.log("------------------------------")*/
     }
 
    
 
-    
+}
+
+
+
+function shuffle() {
+    for (let i = cardDeck.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [cardDeck[i], cardDeck[j]] = [cardDeck[j], cardDeck[i]];
+    }
+  document.getElementById("shuffle-el").textContent = "SHUFFLED!"
 }
