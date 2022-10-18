@@ -260,4 +260,186 @@ let cardDeck = [
     }
 ]
 
-export default cardDeck
+let player = {
+    name: "Player 1",
+    chips: 100
+}
+
+let firstCard
+let secondCard
+
+let cards = []
+let sum = 0
+
+let dealer_cards = []
+let dealer_sum
+
+let hasBlackJack = false
+let isAlive = false
+let message = ""
+let messageEl = document.getElementById("message-el")
+let playerEl = document.getElementById("player-el")
+
+let sumEl = document.getElementById("sum-el")
+let cardsEl = document.getElementById("cards-el")
+
+
+let dealerSumEl = document.getElementById("dealer_sum-el")
+let dealerCardsEl = document.getElementById("dealer_cards-el")
+
+let dealer_round = 0
+let dealer_card1
+let dealer_card2
+let dealer_card3
+let dealer_card4
+let dealer_card5
+let dealer_card6
+
+playerEl.textContent = player.name + ": $" + player.chips
+
+function getRandomCard() {
+    let randomNumber = Math.floor( Math.random() * 13 ) + 1
+    if (randomNumber > 10) {
+        return 10
+    } else if (randomNumber === 1) {
+        return 11
+    } else {
+        return randomNumber
+    }
+}
+
+function getRandomCardFromDeck() {
+    let rnd = Math.floor( Math.random() * cardDeck.length )
+    //console.log(rnd)
+    let card = cardDeck[rnd]
+     return card
+}
+
+function startGame() {
+    //console.log("--------------------")
+    isAlive = true
+    hasBlackJack = false
+    dealer_round = 0
+    dealer_sum = 0
+    dealer_card1 = undefined
+    dealer_card2 = undefined
+    dealer_card3 = undefined
+    dealer_card4 = undefined
+    dealer_card5 = undefined
+    dealer_card6 = undefined
+    firstCard = getRandomCardFromDeck()
+    secondCard = getRandomCardFromDeck()
+    dealer_card1 = getRandomCardFromDeck()
+    dealer_card2 = getRandomCardFromDeck()
+    cards = [firstCard, secondCard]
+    dealer_cards = [dealer_card1, dealer_card2]
+    sum = firstCard.value + secondCard.value
+    dealer_sum = dealer_card1.value + dealer_card2.value
+    dealerSumEl.textContent = ""
+    dealerCardsEl.textContent = ""
+    document.getElementById("shuffle-el").textContent = "SHUFFLE"
+    renderGame()
+}
+
+function renderGame() {
+    cardsEl.innerHTML = "Player 1 Cards: <br />"
+    for (let i = 0; i < cards.length; i++) {
+        cardsEl.innerHTML += `<img src="${cards[i].image}" />` + " "
+    }
+    
+    sumEl.textContent = "Sum: " + sum
+    if (sum <= 20) {
+        message = "Click DRAW  -or-  DEALER PLAY"
+    } else if (sum === 21) {
+        message = "You win! Blackjack! Click DEAL!"
+        hasBlackJack = true
+        isAlive = false
+        player.chips += 20
+        playerEl.textContent = player.name + ": $" + (player.chips)
+    } else if (player.chips <= 0) {
+        message = "GAME OVER!  Click DEAL!"
+        hasBlackJack = false
+        isAlive = false
+        playerEl.textContent = player.name + ": $" + (player.chips)
+    } else {
+        message = "BUST! Click DEAL!"
+        isAlive = false
+        player.chips -= 10
+        playerEl.textContent = player.name + ": $" + (player.chips)
+    }
+    messageEl.textContent = message
+}
+
+
+function newCard() {
+    if (isAlive === true && hasBlackJack === false && dealer_round < 1) {
+        let card = getRandomCardFromDeck()
+        sum += card.value
+        cards.push(card)
+        renderGame()        
+    }
+}
+
+
+function dealerPlay() {
+    if (isAlive === true) {
+        messageEl.textContent = "Click DEALER PLAY" 
+        if (dealer_round === 0) {
+            dealer_round = 1
+        } else if (dealer_sum <=19 && dealer_round === 1) {
+            dealer_card3 = getRandomCardFromDeck()
+            dealer_cards.push(dealer_card3)
+            dealer_sum += dealer_card3.value
+            dealer_round = 2
+        } else if (dealer_sum <=19 && dealer_round === 2) {
+            dealer_card4 = getRandomCardFromDeck()
+            dealer_cards.push(dealer_card4)
+            dealer_sum += dealer_card4.value            
+            dealer_round = 3
+        } else if (dealer_sum <=19 && dealer_round === 3) {
+            dealer_card5 = getRandomCardFromDeck()
+            dealer_cards.push(dealer_card5)
+            dealer_sum += dealer_card5.value
+            dealer_round = 4
+        } else if (dealer_sum <=19 && dealer_round === 4) {
+            dealer_card6 = getRandomCardFromDeck()
+            dealer_cards.push(dealer_card6)
+            dealer_sum += dealer_card6.value            
+            dealer_round = 5
+        }
+
+        dealerCardsEl.innerHTML = "Dealer's Cards: <br />"
+        for (let i = 0; i < dealer_cards.length; i++) {
+            dealerCardsEl.innerHTML += `<img src="${dealer_cards[i].image}" />` + " " 
+        }
+
+
+        dealerSumEl.textContent = "Sum: " + dealer_sum
+        if (dealer_sum === sum && dealer_sum >= 20) {
+            messageEl.textContent = "Draw! Click DEAL!"
+            isAlive = false
+        } else if (dealer_sum > 21 || sum === 21) {
+            messageEl.textContent = "You win! Dealer Bust! Click DEAL!"
+            player.chips += 10
+            playerEl.textContent = player.name + ": $" + (player.chips)
+            isAlive = false            
+        } else if (dealer_sum > sum) {
+            messageEl.textContent = "Dealer wins! Click DEAL!"
+            player.chips -= 10
+            playerEl.textContent = player.name + ": $" + (player.chips)
+            isAlive = false
+        }  
+    }
+
+   
+
+}
+
+
+function shuffle() {
+    for (let i = cardDeck.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [cardDeck[i], cardDeck[j]] = [cardDeck[j], cardDeck[i]];
+    }
+  document.getElementById("shuffle-el").textContent = "SHUFFLED!"
+}
