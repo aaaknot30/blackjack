@@ -441,4 +441,5 @@ function shuffle() {
         [cardDeck[i], cardDeck[j]] = [cardDeck[j], cardDeck[i]];
     }
   document.getElementById("shuffle-el").textContent = "SHUFFLED!"
+  messageEl.textContent = "Cards SHUFFLED! Click DEAL!" 
 }
